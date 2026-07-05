@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Master Cuts Barber Shop</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#111111',
+            secondary: '#1A1A1A',
+            accent: '#C5A059',
+          },
+          fontFamily: {
+            heading: ['Oswald', 'sans-serif'],
+            body: ['Inter', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; color: #F3F4F6; background: #0A0A0A; margin: 0; }
+    h1, h2, h3, h4, h5, h6 { font-family: 'Oswald', sans-serif; }
+    .animate-on-scroll { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .animate-on-scroll.visible { opacity: 1; transform: translateY(0); }
+    /* Layout guard: force all top-level elements to stack vertically */
+    body > header, body > section, body > footer, body > nav,
+    #lp-root > header, #lp-root > section, #lp-root > footer, #lp-root > nav {
+      display: block !important;
+      width: 100% !important;
+      float: none !important;
+    }
+    #lp-root {
+      display: flex !important;
+      flex-direction: column !important;
+      width: 100% !important;
+      overflow-x: hidden !important;
+    }
+  </style>
+</head>
+<body style="display:block; width:100%; margin:0; padding:0;">
+<div id="lp-root">
+<header class="fixed w-full top-0 z-50 bg-[#0A0A0A]/90 backdrop-blur-xl border-b border-[#1A1A1A] transition-all duration-300">
+    <div class="max-w-6xl mx-auto px-6 sm:px-8 h-24 flex items-center justify-between">
+        <!-- Brand / Logo -->
+        <a href="#" class="flex flex-col justify-center">
+            <span class="font-['Oswald'] text-2xl md:text-3xl font-bold text-[#F3F4F6] uppercase tracking-widest leading-none">
+                Master Cuts
+            </span>
+            <span class="font-['Oswald'] text-sm text-[#C5A059] uppercase tracking-[0.3em] mt-1 font-medium">
+                Barber Shop
+            </span>
+        </a>
+
+        <!-- Desktop Navigation -->
+        <nav class="hidden lg:flex items-center gap-8">
+            <a href="#services" class="font-['Inter'] text-[#F3F4F6] text-sm uppercase tracking-widest font-medium hover:text-[#C5A059] transition-colors duration-300">Services</a>
+            <a href="#about" class="font-['Inter'] text-[#F3F4F6] text-sm uppercase tracking-widest font-medium hover:text-[#C5A059] transition-colors duration-300">About</a>
+            <a href="#gallery" class="font-['Inter'] text-[#F3F4F6] text-sm uppercase tracking-widest font-medium hover:text-[#C5A059] transition-colors duration-300">Gallery</a>
+            <a href="#testimonials" class="font-['Inter'] text-[#F3F4F6] text-sm uppercase tracking-widest font-medium hover:text-[#C5A059] transition-colors duration-300">Reviews</a>
+            <a href="#pricing" class="font-['Inter'] text-[#F3F4F6] text-sm uppercase tracking-widest font-medium hover:text-[#C5A059] transition-colors duration-300">Pricing</a>
+        </nav>
+
+        <!-- CTA & Mobile Toggle -->
+        <div class="flex items-center gap-6">
+            <a href="tel:+12568581146" class="hidden md:inline-flex items-center justify-center px-8 py-3 bg-[#C5A059] text-[#111111] font-['Oswald'] uppercase tracking-widest font-bold text-sm hover:bg-[#F3F4F6] transition-colors duration-300">
+                Book Appointment
+            </a>
+            <button id="mobile-menu-toggle" class="lg:hidden text-[#F3F4F6] hover:text-[#C5A059] transition-colors" aria-label="Toggle Menu">
+                <i data-lucide="menu" class="w-8 h-8"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Mobile Navigation Menu -->
+    <div id="mobile-menu" class="hidden lg:hidden absolute top-24 left-0 w-full bg-[#111111] border-b border-[#1A1A1A] shadow-2xl">
+        <nav class="flex flex-col py-6 px-6 gap-6">
+            <a href="#services" class="mobile-link font-['Inter'] text-[#F3F4F6] text-lg uppercase tracking-widest font-medium hover:text-[#C5A059] transition-colors">Services</a>
+            <a href="#about" class="mobile-link font-['Inter'] text-[#F3F4F6] text-lg uppercase tracking-widest font-medium hover:text-[#C5A059] transition-colors">About</a>
+            <a href="#gallery" class="mobile-link font-['Inter'] text-[#F3F4F6] text-lg uppercase tracking-widest font-medium hover:text-[#C5A059] transition-colors">Gallery</a>
+            <a href="#testimonials" class="mobile-link font-['Inter'] text-[#F3F4F6] text-lg uppercase tracking-widest font-medium hover:text-[#C5A059] transition-colors">Reviews</a>
+            <a href="#pricing" class="mobile-link font-['Inter'] text-[#F3F4F6] text-lg uppercase tracking-widest font-medium hover:text-[#C5A059] transition-colors">Pricing</a>
+            <a href="tel:+12568581146" class="mobile-link mt-4 inline-flex items-center justify-center px-6 py-4 bg-[#C5A059] text-[#111111] font-['Oswald'] uppercase tracking-widest font-bold text-base text-center w-full">
+                Book Appointment
+            </a>
+        </nav>
+    </div>
+
+    <script>
+        const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileLinks = document.querySelectorAll('.mobile-link');
+        
+        if (mobileMenuToggle && mobileMenu) {
+            mobileMenuToggle.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+                const icon = mobileMenu.classList.contains('hidden') ? 'menu' : 'x';
+                mobileMenuToggle.innerHTML = `<i data-lucide="${icon}" class="w-8 h-8"></i>`;
+                lucide.createIcons();
+            });
+
+            mobileLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.add('hidden');
+                    mobileMenuToggle.innerHTML = `<i data-lucide="menu" class="w-8 h-8"></i>`;
+                    lucide.createIcons();
+                });
+            });
+        }
+    </script>
+</header>
+
+<section id="hero" class="relative min-h-[95vh] flex items-center bg-[#0A0A0A] pt-24 overflow-hidden">
+    <!-- Background Image with Overlays -->
+    <div class="absolute inset-0 z-0">
+        <img src="https://zgnpmogdjnnhpwewavnr.supabase.co/storage/v1/object/public/project-images/a272af1d-0916-43cf-b653-5cf2faceec7b/0835d4f1-4416-414e-bb74-3ebdde512a8d.png" 
+             alt="Expert barber providing a premium grooming service in a modern dark barbershop" 
+             class="w-full h-full object-cover opacity-50 scale-105 transform origin-center">
+        
+        <!-- Gradient Overlay for readability and mood -->
+        <div class="absolute inset-0 bg-gradient-to-r from-[#0A0A0A] via-[#0A0A0A]/80 to-transparent"></div>
+        <div class="absolute inset-0 bg-gradient-to-t from-[#0A0A0A] via-transparent to-[#0A0A0A]/40"></div>
+    </div>
+
+    <!-- Content Container -->
+    <div class="relative z-10 max-w-6xl mx-auto px-6 sm:px-8 w-full">
+        <div class="max-w-3xl">
+            <!-- Subheading accent -->
+            <div class="flex items-center gap-4 mb-6">
+                <div class="h-[1px] w-12 bg-[#C5A059]"></div>
+                <span class="font-['Inter'] text-[#C5A059] uppercase tracking-[0.2em] text-sm font-semibold">Premium Men's Grooming</span>
+            </div>
+            
+            <!-- Main Headline -->
+            <h1 class="font-['Oswald'] text-5xl md:text-7xl lg:text-[5rem] font-bold text-[#F3F4F6] uppercase leading-[1.05] tracking-tight mb-8">
+                Precision Crafted. <br>
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#C5A059] to-[#E3C385]">Unmistakably Yours.</span>
+            </h1>
+            
+            <!-- Description -->
+            <p class="font-['Inter'] text-lg md:text-xl text-[#F3F4F6]/80 leading-relaxed max-w-2xl mb-12 font-light">
+                Step into a modern sanctuary of masculine style. Our master barbers deliver flawless fades, classic hot towel shaves, and an unparalleled grooming experience tailored for the modern gentleman.
+            </p>
+            
+            <!-- CTAs -->
+            <div class="flex flex-col sm:flex-row gap-5">
+                <a href="#contact" class="group relative inline-flex items-center justify-center px-10 py-5 bg-[#C5A059] text-[#111111] font-['Oswald'] text-lg uppercase tracking-widest font-bold overflow-hidden transition-all duration-300 hover:scale-[1.02]">
+                    <span class="absolute inset-0 w-full h-full bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out"></span>
+                    <span class="relative flex items-center gap-3">
+                        Book Your Chair
+                        <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                    </span>
+                </a>
+                
+                <a href="#services" class="group inline-flex items-center justify-center px-10 py-5 bg-[#111111]/80 backdrop-blur-md border border-[#1A1A1A] text-[#F3F4F6] font-['Oswald'] text-lg uppercase tracking-widest font-bold transition-all duration-300 hover:border-[#C5A059] hover:bg-[#1A1A1A]">
+                    <span class="flex items-center gap-3">
+                        Explore Services
+                    </span>
+                </a>
+            </div>
+
+            <!-- Trust Indicators -->
+            <div class="mt-16 pt-8 border-t border-[#1A1A1A]/50 flex items-center gap-8 md:gap-16">
+                <div>
+                    <p class="font-['Oswald'] text-3xl font-bold text-[#F3F4F6]">4.9<span class="text-[#C5A059]">/5</span></p>
+                    <p class="font-['Inter'] text-xs text-[#F3F4F6]/60 uppercase tracking-wider mt-1">Google Reviews</p>
+                </div>
+                <div>
+                    <p class="font-['Oswald'] text-3xl font-bold text-[#F3F4F6]">10<span class="text-[#C5A059]">+</span></p>
+                    <p class="font-['Inter'] text-xs text-[#F3F4F6]/60 uppercase tracking-wider mt-1">Master Barbers</p>
+                </div>
+                <div class="hidden sm:block">
+                    <p class="font-['Oswald'] text-3xl font-bold text-[#F3F4F6]">Est<span class="text-[#C5A059]">.</span></p>
+                    <p class="font-['Inter'] text-xs text-[#F3F4F6]/60 uppercase tracking-wider mt-1">Modern Tradition</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="services" class="py-20 md:py-28 lg:py-32 bg-[#0A0A0A] text-[#F3F4F6]">
+    <div class="max-w-6xl mx-auto px-6 sm:px-8">
+        <div class="text-center max-w-3xl mx-auto mb-16 md:mb-24 animate-on-scroll">
+            <span class="text-[#C5A059] text-sm uppercase tracking-[0.2em] font-['Inter'] font-bold mb-4 block">The Craft</span>
+            <h2 class="text-4xl md:text-5xl lg:text-6xl font-['Oswald'] uppercase tracking-wide text-[#F3F4F6]">Premium Grooming Services</h2>
+            <div class="w-16 h-1 bg-[#C5A059] mx-auto mt-6"></div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <!-- Service 1 -->
+            <div class="bg-[#111111] p-8 border border-[#1A1A1A] hover:border-[#C5A059] transition-all duration-300 group animate-on-scroll">
+                <div class="w-14 h-14 bg-[#1A1A1A] text-[#C5A059] flex items-center justify-center rounded-sm mb-6 group-hover:bg-[#C5A059] group-hover:text-[#111111] transition-colors duration-300">
+                    <i data-lucide="scissors" class="w-7 h-7"></i>
+                </div>
+                <h3 class="text-2xl font-['Oswald'] uppercase mb-3 text-[#F3F4F6]">Precision Haircuts</h3>
+                <p class="text-[#F3F4F6]/70 font-['Inter'] leading-relaxed text-sm">Expert fades, classic cuts, and modern styling tailored to your exact head shape and personal style.</p>
+            </div>
+
+            <!-- Service 2 -->
+            <div class="bg-[#111111] p-8 border border-[#1A1A1A] hover:border-[#C5A059] transition-all duration-300 group animate-on-scroll" style="transition-delay: 100ms;">
+                <div class="w-14 h-14 bg-[#1A1A1A] text-[#C5A059] flex items-center justify-center rounded-sm mb-6 group-hover:bg-[#C5A059] group-hover:text-[#111111] transition-colors duration-300">
+                    <i data-lucide="scan-face" class="w-7 h-7"></i>
+                </div>
+                <h3 class="text-2xl font-['Oswald'] uppercase mb-3 text-[#F3F4F6]">Beard Grooming</h3>
+                <p class="text-[#F3F4F6]/70 font-['Inter'] leading-relaxed text-sm">Detailed beard shaping, line-ups, and conditioning treatments to keep your facial hair looking sharp and healthy.</p>
+            </div>
+
+            <!-- Service 3 -->
+            <div class="bg-[#111111] p-8 border border-[#1A1A1A] hover:border-[#C5A059] transition-all duration-300 group animate-on-scroll" style="transition-delay: 200ms;">
+                <div class="w-14 h-14 bg-[#1A1A1A] text-[#C5A059] flex items-center justify-center rounded-sm mb-6 group-hover:bg-[#C5A059] group-hover:text-[#111111] transition-colors duration-300">
+                    <i data-lucide="droplet" class="w-7 h-7"></i>
+                </div>
+                <h3 class="text-2xl font-['Oswald'] uppercase mb-3 text-[#F3F4F6]">Hot Towel Shave</h3>
+                <p class="text-[#F3F4F6]/70 font-['Inter'] leading-relaxed text-sm">The ultimate relaxation experience. A traditional straight razor shave with essential oils and steaming hot towels.</p>
+            </div>
+
+            <!-- Service 4 -->
+            <div class="bg-[#111111] p-8 border border-[#1A1A1A] hover:border-[#C5A059] transition-all duration-300 group animate-on-scroll" style="transition-delay: 300ms;">
+                <div class="w-14 h-14 bg-[#1A1A1A] text-[#C5A059] flex items-center justify-center rounded-sm mb-6 group-hover:bg-[#C5A059] group-hover:text-[#111111] transition-colors duration-300">
+                    <i data-lucide="sparkles" class="w-7 h-7"></i>
+                </div>
+                <h3 class="text-2xl font-['Oswald'] uppercase mb-3 text-[#F3F4F6]">Executive Styling</h3>
+                <p class="text-[#F3F4F6]/70 font-['Inter'] leading-relaxed text-sm">Premium wash, scalp massage, blow-dry, and styling using top-tier men's grooming products for a flawless finish.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="about" class="py-20 md:py-28 lg:py-32 bg-[#111111] text-[#F3F4F6] overflow-hidden">
+    <div class="max-w-6xl mx-auto px-6 sm:px-8">
+        <div class="flex flex-col lg:flex-row items-center gap-16 lg:gap-24">
+            <div class="w-full lg:w-1/2 relative animate-on-scroll">
+                <div class="absolute inset-0 bg-[#C5A059] transform translate-x-4 translate-y-4"></div>
+                <img src="https://zgnpmogdjnnhpwewavnr.supabase.co/storage/v1/object/public/project-images/a272af1d-0916-43cf-b653-5cf2faceec7b/1782858218032-gpsp0h.jpg" alt="Interior view of modern premium barbershop featuring vintage leather barber chairs and professional lighting" class="relative z-10 w-full h-auto object-cover grayscale hover:grayscale-0 transition-all duration-700 border border-[#1A1A1A]">
+            </div>
+            <div class="w-full lg:w-1/2 animate-on-scroll">
+                <span class="text-[#C5A059] text-sm uppercase tracking-[0.2em] font-['Inter'] font-bold mb-4 block">The Tradition</span>
+                <h2 class="text-4xl md:text-5xl lg:text-6xl font-['Oswald'] uppercase tracking-wide text-[#F3F4F6] mb-6">More Than Just A Haircut</h2>
+                <div class="space-y-6 font-['Inter'] text-[#F3F4F6]/80 text-lg leading-relaxed">
+                    <p>Step into an atmosphere designed for the modern gentleman. We blend old-school barbering traditions with contemporary techniques to deliver an unparalleled grooming experience. Our shop is a sanctuary where you can sit back, enjoy a complimentary beverage, and let master barbers elevate your style.</p>
+                    <p>Every barber in our chairs has been rigorously trained in the art of men's grooming. We don't just cut hair; we sculpt confidence. From the moment you walk through our doors, you'll experience a level of professionalism and attention to detail that sets a new standard.</p>
+                </div>
+                <div class="mt-10 flex items-center gap-6">
+                    <div class="flex items-center gap-3">
+                        <i data-lucide="check-circle" class="text-[#C5A059] w-6 h-6"></i>
+                        <span class="font-['Oswald'] uppercase tracking-wider">Master Barbers</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <i data-lucide="check-circle" class="text-[#C5A059] w-6 h-6"></i>
+                        <span class="font-['Oswald'] uppercase tracking-wider">Premium Products</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="gallery" class="py-20 md:py-28 lg:py-32 bg-[#0A0A0A] text-[#F3F4F6]">
+    <div class="max-w-6xl mx-auto px-6 sm:px-8">
+        <div class="flex flex-col md:flex-row justify-between items-end mb-16 animate-on-scroll">
+            <div class="max-w-2xl">
+                <span class="text-[#C5A059] text-sm uppercase tracking-[0.2em] font-['Inter'] font-bold mb-4 block">Our Portfolio</span>
+                <h2 class="text-4xl md:text-5xl lg:text-6xl font-['Oswald'] uppercase tracking-wide text-[#F3F4F6]">The Standard of Excellence</h2>
+            </div>
+            <a href="#contact" class="hidden md:inline-flex items-center gap-2 text-[#C5A059] font-['Oswald'] uppercase tracking-wider hover:text-[#F3F4F6] transition-colors border-b border-[#C5A059] pb-1">
+                Book Your Spot <i data-lucide="arrow-right" class="w-4 h-4"></i>
+            </a>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div class="group relative overflow-hidden animate-on-scroll">
+                <img src="https://zgnpmogdjnnhpwewavnr.supabase.co/storage/v1/object/public/project-images/a272af1d-0916-43cf-b653-5cf2faceec7b/8cab2ecc-33dd-49cd-bb4a-daeea5fd0a84.png" alt="Close up profile view of a perfectly blended skin fade haircut on a male client" class="w-full h-[500px] object-cover grayscale group-hover:grayscale-0 transition-all duration-700 transform group-hover:scale-105">
+                <div class="absolute inset-0 bg-gradient-to-t from-[#0A0A0A] via-transparent to-transparent opacity-80"></div>
+                <div class="absolute bottom-0 left-0 p-8 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                    <h3 class="text-2xl font-['Oswald'] uppercase text-[#C5A059] mb-1">Skin Fade</h3>
+                    <p class="text-[#F3F4F6]/70 font-['Inter'] text-sm">Flawless blending and sharp lines.</p>
+                </div>
+            </div>
+
+            <div class="group relative overflow-hidden animate-on-scroll" style="transition-delay: 100ms;">
+                <img src="https://zgnpmogdjnnhpwewavnr.supabase.co/storage/v1/object/public/project-images/a272af1d-0916-43cf-b653-5cf2faceec7b/e94b114c-4601-4074-823d-2e43a90a3fba.png" alt="Professional barber using a straight razor to detail and line up a client's thick beard" class="w-full h-[500px] object-cover grayscale group-hover:grayscale-0 transition-all duration-700 transform group-hover:scale-105">
+                <div class="absolute inset-0 bg-gradient-to-t from-[#0A0A0A] via-transparent to-transparent opacity-80"></div>
+                <div class="absolute bottom-0 left-0 p-8 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                    <h3 class="text-2xl font-['Oswald'] uppercase text-[#C5A059] mb-1">Beard Sculpting</h3>
+                    <p class="text-[#F3F4F6]/70 font-['Inter'] text-sm">Precision straight razor detailing.</p>
+                </div>
+            </div>
+
+            <div class="group relative overflow-hidden animate-on-scroll md:col-span-2 lg:col-span-1" style="transition-delay: 200ms;">
+                <img src="https://zgnpmogdjnnhpwewavnr.supabase.co/storage/v1/object/public/project-images/a272af1d-0916-43cf-b653-5cf2faceec7b/91fcc526-3b90-4e4b-a1ae-fa6d77845004.png" alt="Client with a perfectly styled classic pompadour haircut looking sharp" class="w-full h-[500px] object-cover grayscale group-hover:grayscale-0 transition-all duration-700 transform group-hover:scale-105">
+                <div class="absolute inset-0 bg-gradient-to-t from-[#0A0A0A] via-transparent to-transparent opacity-80"></div>
+                <div class="absolute bottom-0 left-0 p-8 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                    <h3 class="text-2xl font-['Oswald'] uppercase text-[#C5A059] mb-1">Classic Styling</h3>
+                    <p class="text-[#F3F4F6]/70 font-['Inter'] text-sm">Timeless looks with modern execution.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="testimonials" class="py-20 md:py-28 lg:py-32 bg-[#111111] text-[#F3F4F6]">
+    <div class="max-w-6xl mx-auto px-6 sm:px-8">
+        <div class="text-center max-w-3xl mx-auto mb-16 md:mb-24 animate-on-scroll">
+            <i data-lucide="quote" class="w-12 h-12 text-[#1A1A1A] mx-auto mb-6"></i>
+            <h2 class="text-4xl md:text-5xl font-['Oswald'] uppercase tracking-wide text-[#F3F4F6]">Word on the Street</h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- Review 1 -->
+            <div class="bg-[#0A0A0A] p-8 border-t-4 border-[#C5A059] animate-on-scroll">
+                <div class="flex gap-1 mb-6 text-[#C5A059]">
+                    <i data-lucide="star" class="w-5 h-5 fill-current"></i>
+                    <i data-lucide="star" class="w-5 h-5 fill-current"></i>
+                    <i data-lucide="star" class="w-5 h-5 fill-current"></i>
+                    <i data-lucide="star" class="w-5 h-5 fill-current"></i>
+                    <i data-lucide="star" class="w-5 h-5 fill-current"></i>
+                </div>
+                <p class="font-['Inter'] text-[#F3F4F6]/80 mb-8 italic leading-relaxed">"I went to Nas the day after thanksgiving. He was very professional and did a great job fixing my hair after I messed it up trying to give myself a haircut. I liked that he communicated what he was going to do and checked in before he did something to see if I was ok with what he was doing. I'll be back for sure."</p>
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 bg-[#1A1A1A] rounded-full flex items-center justify-center text-[#C5A059] font-['Oswald'] text-xl">EH</div>
+                    <div>
+                        <h4 class="font-['Oswald'] uppercase text-[#F3F4F6] tracking-wider">E. Harry</h4>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Review 2 -->
+            <div class="bg-[#0A0A0A] p-8 border-t-4 border-[#C5A059] animate-on-scroll" style="transition-delay: 100ms;">
+                <div class="flex gap-1 mb-6 text-[#C5A059]">
+                    <i data-lucide="star" class="w-5 h-5 fill-current"></i>
+                    <i data-lucide="star" class="w-5 h-5 fill-current"></i>
+                    <i data-lucide="star" class="w-5 h-5 fill-current"></i>
+                    <i data-lucide="star" class="w-5 h-5 fill-current"></i>
+                    <i data-lucide="star" class="w-5 h-5 fill-current"></i>
+                </div>
+                <p class="font-['Inter'] text-[#F3F4F6]/80 mb-8 italic leading-relaxed">"Bruce did a wonderful job on my boys hair cut, most definitely will be returning! My first time bringing my boys and he did great!"</p>
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 bg-[#1A1A1A] rounded-full flex items-center justify-center text-[#C5A059] font-['Oswald'] text-xl">TL</div>
+                    <div>
+                        <h4 class="font-['Oswald'] uppercase text-[#F3F4F6] tracking-wider">Teresa L.</h4>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Review 3 -->
+            <div class="bg-[#0A0A0A] p-8 border-t-4 border-[#C5A059] animate-on-scroll" style="transition-delay: 200ms;">
+                <div class="flex gap-1 mb-6 text-[#C5A059]">
+                    <i data-lucide="star" class="w-5 h-5 fill-current"></i>
+                    <i data-lucide="star" class="w-5 h-5 fill-current"></i>
+                    <i data-lucide="star" class="w-5 h-5 fill-current"></i>
+                    <i data-lucide="star" class="w-5 h-5 fill-current"></i>
+                    <i data-lucide="star" class="w-5 h-5 fill-current"></i>
+                </div>
+                <p class="font-['Inter'] text-[#F3F4F6]/80 mb-8 italic leading-relaxed">"My son started going to this barbershop a couple months ago. And we enjoy the atmosphere, the really nice barbers and the cuts always look good. Bruce was amazing, friendly. We will definitely be back."</p>
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 bg-[#1A1A1A] rounded-full flex items-center justify-center text-[#C5A059] font-['Oswald'] text-xl">BM</div>
+                    <div>
+                        <h4 class="font-['Oswald'] uppercase text-[#F3F4F6] tracking-wider">Bonita M.</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="pricing" class="py-20 md:py-28 lg:py-32 bg-[#0A0A0A] text-[#F3F4F6]">
+    <div class="max-w-4xl mx-auto px-6 sm:px-8">
+        <div class="text-center mb-16 md:mb-24 animate-on-scroll">
+            <span class="text-[#C5A059] text-sm uppercase tracking-[0.2em] font-['Inter'] font-bold mb-4 block">The Investment</span>
+            <h2 class="text-4xl md:text-5xl lg:text-6xl font-['Oswald'] uppercase tracking-wide text-[#F3F4F6]">Service Menu</h2>
+        </div>
+
+        <div class="space-y-12 bg-[#111111] p-8 md:p-12 border border-[#1A1A1A] shadow-2xl animate-on-scroll">
+            
+            <!-- Category 1 -->
+            <div>
+                <h3 class="text-[#C5A059] font-['Oswald'] text-2xl uppercase tracking-wider border-b border-[#1A1A1A] pb-4 mb-8">Hair</h3>
+                <div class="space-y-6">
+                    <div class="group">
+                        <div class="flex justify-between items-baseline mb-2">
+                            <h4 class="text-xl font-['Oswald'] uppercase tracking-wide text-[#F3F4F6] group-hover:text-[#C5A059] transition-colors">Executive Cut</h4>
+                            <div class="flex-grow border-b border-dotted border-[#1A1A1A] mx-4 opacity-50"></div>
+                            <span class="text-2xl font-['Oswald'] text-[#C5A059]">$45</span>
+                        </div>
+                        <p class="text-sm font-['Inter'] text-[#F3F4F6]/60">Consultation, precision cut, neck shave, style.</p>
+                    </div>
+                    
+                    <div class="group">
+                        <div class="flex justify-between items-baseline mb-2">
+                            <h4 class="text-xl font-['Oswald'] uppercase tracking-wide text-[#F3F4F6] group-hover:text-[#C5A059] transition-colors">Skin Fade</h4>
+                            <div class="flex-grow border-b border-dotted border-[#1A1A1A] mx-4 opacity-50"></div>
+                            <span class="text-2xl font-['Oswald'] text-[#C5A059]">$50</span>
+                        </div>
+                        <p class="text-sm font-['Inter'] text-[#F3F4F6]/60">Zero/bald fade with clippers or foil shaver.</p>
+                    </div>
+
+                    <div class="group">
+                        <div class="flex justify-between items-baseline mb-2">
+                            <h4 class="text-xl font-['Oswald'] uppercase tracking-wide text-[#F3F4F6] group-hover:text-[#C5A059] transition-colors">Junior Cut (Under 12)</h4>
+                            <div class="flex-grow border-b border-dotted border-[#1A1A1A] mx-4 opacity-50"></div>
+                            <span class="text-2xl font-['Oswald'] text-[#C5A059]">$35</span>
+                        </div>
+                        <p class="text-sm font-['Inter'] text-[#F3F4F6]/60">Classic styles for the young gentlemen.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Category 2 -->
+            <div>
+                <h3 class="text-[#C5A059] font-['Oswald'] text-2xl uppercase tracking-wider border-b border-[#1A1A1A] pb-4 mb-8">Face & Beard</h3>
+                <div class="space-y-6">
+                    <div class="group">
+                        <div class="flex justify-between items-baseline mb-2">
+                            <h4 class="text-xl font-['Oswald'] uppercase tracking-wide text-[#F3F4F6] group-hover:text-[#C5A059] transition-colors">Beard Sculpt & Lineup</h4>
+                            <div class="flex-grow border-b border-dotted border-[#1A1A1A] mx-4 opacity-50"></div>
+                            <span class="text-2xl font-['Oswald'] text-[#C5A059]">$25</span>
+                        </div>
+                        <p class="text-sm font-['Inter'] text-[#F3F4F6]/60">Trimming, shaping, and straight razor edges.</p>
+                    </div>
+                    
+                    <div class="group">
+                        <div class="flex justify-between items-baseline mb-2">
+                            <h4 class="text-xl font-['Oswald'] uppercase tracking-wide text-[#F3F4F6] group-hover:text-[#C5A059] transition-colors">Hot Towel Shave</h4>
+                            <div class="flex-grow border-b border-dotted border-[#1A1A1A] mx-4 opacity-50"></div>
+                            <span class="text-2xl font-['Oswald'] text-[#C5A059]">$40</span>
+                        </div>
+                        <p class="text-sm font-['Inter'] text-[#F3F4F6]/60">Traditional multi-step straight razor shave.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Combo -->
+            <div class="bg-[#1A1A1A] p-6 -mx-4 md:-mx-8 border-l-4 border-[#C5A059]">
+                <div class="flex justify-between items-baseline mb-2">
+                    <h4 class="text-xl font-['Oswald'] uppercase tracking-wide text-[#C5A059]">The Full Works (Cut & Beard)</h4>
+                    <div class="flex-grow border-b border-dotted border-[#111111] mx-4 opacity-50"></div>
+                    <span class="text-2xl font-['Oswald'] text-[#F3F4F6]">$65</span>
+                </div>
+                <p class="text-sm font-['Inter'] text-[#F3F4F6]/80">Our signature combo. Executive cut paired with a full beard sculpt.</p>
+            </div>
+
+        </div>
+        
+        <div class="text-center mt-12 animate-on-scroll">
+            <a href="tel:+12568581146" class="inline-block bg-[#111111] text-[#F3F4F6] font-['Oswald'] uppercase tracking-widest px-10 py-4 border border-[#C5A059] hover:bg-[#C5A059] hover:text-[#111111] transition-colors duration-300">
+                Secure Your Chair
+            </a>
+        </div>
+    </div>
+</section>
+
+<section id="contact" class="py-24 md:py-32 bg-[#0A0A0A] relative overflow-hidden font-['Inter'] text-[#F3F4F6]">
+  <!-- Abstract Glowing Accent Orb -->
+  <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[#C5A059]/10 rounded-full blur-[150px] pointer-events-none"></div>
+
+  <div class="max-w-4xl mx-auto px-6 sm:px-8 relative z-10">
+    <div class="space-y-12 text-center">
+      
+      <!-- Heading -->
+      <div>
+        <h2 class="font-['Oswald'] text-5xl md:text-6xl font-bold mb-4 uppercase tracking-tight text-white">
+          Visit <span class="text-[#C5A059]">Master Cuts</span>
+        </h2>
+        <p class="text-lg text-gray-400 leading-relaxed max-w-2xl mx-auto">
+          Ready for a fresh fade, crisp lineup, or a classic hot towel shave? Stop by, give us a call, or check our hours below. Walk-ins are welcome, but appointments rule.
+        </p>
+      </div>
+
+      <!-- Contact Info Grid -->
+      <div class="grid md:grid-cols-3 gap-8 text-left">
+        
+        <!-- Location -->
+        <div class="flex flex-col items-start gap-5 group bg-white/5 backdrop-blur-xl border border-white/10 p-8 rounded-2xl hover:border-[#C5A059]/50 transition-all duration-500">
+          <div class="w-14 h-14 shrink-0 rounded-xl bg-[#1A1A1A] border border-white/10 flex items-center justify-center text-[#C5A059] group-hover:bg-[#C5A059] group-hover:text-[#111111] transition-all duration-500 shadow-lg">
+            <i data-lucide="map-pin" class="w-6 h-6"></i>
+          </div>
+          <div>
+            <h4 class="font-['Oswald'] text-xl tracking-wide uppercase text-white mb-2">Our Location</h4>
+            <p class="text-gray-400 leading-relaxed">3700 Blue Spring Rd NW # V<br>Huntsville, AL 35810</p>
+          </div>
+        </div>
+
+        <!-- Hours -->
+        <div class="flex flex-col items-start gap-5 group bg-white/5 backdrop-blur-xl border border-white/10 p-8 rounded-2xl hover:border-[#C5A059]/50 transition-all duration-500">
+          <div class="w-14 h-14 shrink-0 rounded-xl bg-[#1A1A1A] border border-white/10 flex items-center justify-center text-[#C5A059] group-hover:bg-[#C5A059] group-hover:text-[#111111] transition-all duration-500 shadow-lg">
+            <i data-lucide="clock" class="w-6 h-6"></i>
+          </div>
+          <div>
+            <h4 class="font-['Oswald'] text-xl tracking-wide uppercase text-white mb-2">Shop Hours</h4>
+            <p class="text-gray-400 leading-relaxed">Tue - Fri: 9:00 AM - 8:00 PM<br>Sat: 8:00 AM - 6:00 PM<br>Sun - Mon: Closed</p>
+          </div>
+        </div>
+
+        <!-- Phone -->
+        <div class="flex flex-col items-start gap-5 group bg-white/5 backdrop-blur-xl border border-white/10 p-8 rounded-2xl hover:border-[#C5A059]/50 transition-all duration-500">
+          <div class="w-14 h-14 shrink-0 rounded-xl bg-[#1A1A1A] border border-white/10 flex items-center justify-center text-[#C5A059] group-hover:bg-[#C5A059] group-hover:text-[#111111] transition-all duration-500 shadow-lg">
+            <i data-lucide="phone" class="w-6 h-6"></i>
+          </div>
+          <div>
+            <h4 class="font-['Oswald'] text-xl tracking-wide uppercase text-white mb-2">Call the Barber Shop</h4>
+            <p class="text-gray-400 leading-relaxed"><a href="tel:+12568581146" class="hover:text-[#C5A059] transition-colors">(256) 858-1146</a></p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Contact Form -->
+      <div class="pt-8">
+        <div class="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-8 md:p-12 text-left">
+          <div class="text-center mb-10">
+            <div class="inline-flex items-center gap-2 mb-4">
+              <div class="w-8 h-px bg-[#C5A059]"></div>
+              <span class="font-['Oswald'] text-sm uppercase tracking-[0.3em] text-[#C5A059] font-medium">Get In Touch</span>
+              <div class="w-8 h-px bg-[#C5A059]"></div>
+            </div>
+            <h3 class="font-['Oswald'] text-3xl md:text-4xl font-bold uppercase tracking-tight text-white">
+              Contact Master Cuts <span class="text-[#C5A059]">Barbershop</span>
+            </h3>
+            <p class="text-gray-400 mt-3 max-w-xl mx-auto">Have a question or want to book a specific style? Drop us a message and we'll get back to you.</p>
+          </div>
+
+          <form id="contact-form" class="space-y-6">
+            <div class="grid md:grid-cols-2 gap-6">
+              <div>
+                <label for="name" class="block font-['Oswald'] text-xs uppercase tracking-widest text-[#C5A059] font-medium mb-2">Name</label>
+                <input type="text" id="name" name="name" required
+                  class="w-full px-4 py-3 bg-[#111111] border border-white/10 rounded-lg text-[#F3F4F6] placeholder-gray-500 focus:outline-none focus:border-[#C5A059] focus:ring-1 focus:ring-[#C5A059] transition-colors duration-300"
+                  placeholder="Your name">
+              </div>
+              <div>
+                <label for="email" class="block font-['Oswald'] text-xs uppercase tracking-widest text-[#C5A059] font-medium mb-2">Email</label>
+                <input type="email" id="email" name="email" required
+                  class="w-full px-4 py-3 bg-[#111111] border border-white/10 rounded-lg text-[#F3F4F6] placeholder-gray-500 focus:outline-none focus:border-[#C5A059] focus:ring-1 focus:ring-[#C5A059] transition-colors duration-300"
+                  placeholder="your@email.com">
+              </div>
+            </div>
+            <div>
+              <label for="message" class="block font-['Oswald'] text-xs uppercase tracking-widest text-[#C5A059] font-medium mb-2">Message</label>
+              <textarea id="message" name="message" rows="5" required
+                class="w-full px-4 py-3 bg-[#111111] border border-white/10 rounded-lg text-[#F3F4F6] placeholder-gray-500 focus:outline-none focus:border-[#C5A059] focus:ring-1 focus:ring-[#C5A059] transition-colors duration-300 resize-none"
+                placeholder="Tell us what you're looking for..."></textarea>
+            </div>
+            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pt-2">
+              <button type="submit" id="submit-btn"
+                class="inline-flex items-center justify-center gap-2 px-10 py-4 bg-[#C5A059] text-[#111111] font-['Oswald'] uppercase tracking-widest font-bold text-sm hover:bg-[#F3F4F6] transition-colors duration-300 rounded-lg">
+                <i data-lucide="send" class="w-4 h-4"></i>
+                Send Message
+              </button>
+              <p id="form-status" class="text-sm text-gray-400"></p>
+            </div>
+          </form>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      const contactForm = document.getElementById('contact-form');
+      const formStatus = document.getElementById('form-status');
+      const submitBtn = document.getElementById('submit-btn');
+      if (contactForm) {
+        contactForm.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          const originalHTML = submitBtn.innerHTML;
+          submitBtn.textContent = 'Sending...';
+          submitBtn.disabled = true;
+          try {
+            const formData = new FormData(contactForm);
+            const response = await fetch('https://zgnpmogdjnnhpwewavnr.supabase.co/functions/v1/contact-form-submit', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                projectId: '{{PROJECT_ID}}',
+                name: formData.get('name'),
+                email: formData.get('email'),
+                message: formData.get('message')
+              })
+            });
+            const data = await response.json();
+            if (response.ok) {
+              formStatus.textContent = 'Message sent successfully! We\'ll be in touch.';
+              formStatus.className = 'text-sm text-green-400';
+              contactForm.reset();
+            } else {
+              formStatus.textContent = data.error || 'Failed to send message.';
+              formStatus.className = 'text-sm text-red-400';
+            }
+          } catch (error) {
+            formStatus.textContent = 'Network error. Please try again.';
+            formStatus.className = 'text-sm text-red-400';
+          } finally {
+            submitBtn.innerHTML = originalHTML;
+            submitBtn.disabled = false;
+            if (window.lucide) lucide.createIcons();
+          }
+        });
+      }
+    })();
+  </script>
+</section>
+
+<footer class="bg-[#111111] pt-24 pb-10 border-t border-white/5 font-['Inter'] text-[#F3F4F6] relative overflow-hidden">
+  <!-- Subtle Background Pattern -->
+  <div class="absolute inset-0 opacity-[0.03] pointer-events-none" style="background-image: radial-gradient(#C5A059 1px, transparent 1px); background-size: 30px 30px;"></div>
+
+  <div class="max-w-6xl mx-auto px-6 sm:px-8 relative z-10">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8 mb-16">
+      
+      <!-- Brand Column -->
+      <div class="space-y-6 lg:pr-8">
+        <h3 class="font-['Oswald'] text-3xl font-bold text-white uppercase tracking-wider flex items-center gap-2">
+          <i data-lucide="scissors" class="text-[#C5A059] w-8 h-8"></i>
+          Master Cuts <span class="text-[#C5A059]">Barber Shop</span>
+        </h3>
+        <p class="text-gray-400 leading-relaxed text-sm">
+          Where classic barbering traditions meet modern style. We deliver precision cuts, expert beard grooming, and an unmatched atmosphere for the modern gentleman.
+        </p>
+        <div class="flex gap-4 pt-2">
+          <a href="#" class="w-10 h-10 rounded-full bg-[#1A1A1A] flex items-center justify-center text-gray-400 hover:bg-[#C5A059] hover:text-[#111111] hover:-translate-y-1 transition-all duration-300" aria-label="Instagram">
+            <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
+          </a>
+          <a href="#" class="w-10 h-10 rounded-full bg-[#1A1A1A] flex items-center justify-center text-gray-400 hover:bg-[#C5A059] hover:text-[#111111] hover:-translate-y-1 transition-all duration-300" aria-label="Facebook">
+            <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+          </a>
+          <a href="#" class="w-10 h-10 rounded-full bg-[#1A1A1A] flex items-center justify-center text-gray-400 hover:bg-[#C5A059] hover:text-[#111111] hover:-translate-y-1 transition-all duration-300" aria-label="TikTok">
+            <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Quick Links -->
+      <div>
+        <h4 class="font-['Oswald'] text-lg uppercase tracking-widest text-white mb-6">Quick Links</h4>
+        <ul class="space-y-4">
+          <li><a href="#services" class="text-gray-400 hover:text-[#C5A059] transition-colors flex items-center gap-2"><i data-lucide="chevron-right" class="w-4 h-4 text-[#C5A059]"></i> Our Services</a></li>
+          <li><a href="#gallery" class="text-gray-400 hover:text-[#C5A059] transition-colors flex items-center gap-2"><i data-lucide="chevron-right" class="w-4 h-4 text-[#C5A059]"></i> The Gallery</a></li>
+          <li><a href="#pricing" class="text-gray-400 hover:text-[#C5A059] transition-colors flex items-center gap-2"><i data-lucide="chevron-right" class="w-4 h-4 text-[#C5A059]"></i> Pricing Menu</a></li>
+          <li><a href="#about" class="text-gray-400 hover:text-[#C5A059] transition-colors flex items-center gap-2"><i data-lucide="chevron-right" class="w-4 h-4 text-[#C5A059]"></i> About Us</a></li>
+        </ul>
+      </div>
+
+      <!-- Premium Services -->
+      <div>
+        <h4 class="font-['Oswald'] text-lg uppercase tracking-widest text-white mb-6">Premium Services</h4>
+        <ul class="space-y-4">
+          <li class="text-gray-400 flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-[#C5A059]"></i> Precision Fades</li>
+          <li class="text-gray-400 flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-[#C5A059]"></i> Classic Scissor Cuts</li>
+          <li class="text-gray-400 flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-[#C5A059]"></i> Hot Towel Shaves</li>
+          <li class="text-gray-400 flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-[#C5A059]"></i> Beard Sculpting</li>
+        </ul>
+      </div>
+
+      <!-- Contact Info -->
+      <div>
+        <h4 class="font-['Oswald'] text-lg uppercase tracking-widest text-white mb-6">Get In Touch</h4>
+        <ul class="space-y-4">
+          <li class="flex items-start gap-3">
+            <i data-lucide="map-pin" class="w-5 h-5 text-[#C5A059] shrink-0 mt-0.5"></i>
+            <span class="text-gray-400 text-sm leading-relaxed">3700 Blue Spring Rd NW # V<br>Huntsville, AL 35810</span>
+          </li>
+          <li class="flex items-center gap-3">
+            <i data-lucide="phone" class="w-5 h-5 text-[#C5A059] shrink-0"></i>
+            <span class="text-gray-400 text-sm"><a href="tel:+12568581146" class="hover:text-[#C5A059] transition-colors">(256) 858-1146</a></span>
+          </li>
+          <li class="flex items-center gap-3">
+            <i data-lucide="mail" class="w-5 h-5 text-[#C5A059] shrink-0"></i>
+            <span class="text-gray-400 text-sm"><a href="mailto:mastercutshsv@gmail.com" class="hover:text-[#C5A059] transition-colors">mastercutshsv@gmail.com</a></span>
+          </li>
+        </ul>
+      </div>
+
+    </div>
+
+    <!-- Prominent Shop Name Display -->
+    <div class="py-10 border-t border-white/10 text-center">
+      <h2 class="font-['Oswald'] text-4xl md:text-6xl lg:text-7xl font-bold uppercase tracking-[0.15em] text-white leading-tight">
+        Master Cuts <span class="text-[#C5A059]">Barber Shop</span>
+      </h2>
+      <p class="font-['Oswald'] text-xs md:text-sm uppercase tracking-[0.4em] text-gray-500 mt-4">
+        Crafting Confidence — One Cut At A Time
+      </p>
+    </div>
+
+    <!-- Bottom Bar -->
+    <div class="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4">
+      <p class="text-gray-500 text-sm">
+        &copy; <script>document.write(new Date().getFullYear())</script> Master Cuts Barber Shop. All rights reserved.
+      </p>
+      <div class="flex gap-6 text-sm">
+        <a href="#" class="text-gray-500 hover:text-[#C5A059] transition-colors">Privacy Policy</a>
+        <a href="#" class="text-gray-500 hover:text-[#C5A059] transition-colors">Terms of Service</a>
+      </div>
+    </div>
+  </div>
+</footer>
+</div>
+
+<script>
+  lucide.createIcons();
+  
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.animate-on-scroll').forEach(el => observer.observe(el));
+
+  const contactForm = document.getElementById('contact-form');
+  const formStatus = document.getElementById('form-status');
+  const submitBtn = document.getElementById('submit-btn');
+  if (contactForm) {
+    contactForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const originalText = submitBtn.textContent;
+      submitBtn.textContent = 'Sending...';
+      submitBtn.disabled = true;
+      try {
+        const formData = new FormData(contactForm);
+        const response = await fetch('https://zgnpmogdjnnhpwewavnr.supabase.co/functions/v1/contact-form-submit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            projectId: '{{PROJECT_ID}}',
+            name: formData.get('name'),
+            email: formData.get('email'),
+            message: formData.get('message')
+          })
+        });
+        const data = await response.json();
+        if (response.ok) {
+          formStatus.textContent = 'Message sent successfully!';
+          formStatus.className = 'text-sm text-green-600';
+          contactForm.reset();
+        } else {
+          formStatus.textContent = data.error || 'Failed to send message.';
+          formStatus.className = 'text-sm text-red-600';
+        }
+      } catch (error) {
+        formStatus.textContent = 'Network error. Please try again.';
+        formStatus.className = 'text-sm text-red-600';
+      } finally {
+        submitBtn.textContent = originalText;
+        submitBtn.disabled = false;
+      }
+    });
+  }
+</script>
+</body>
+</html>
